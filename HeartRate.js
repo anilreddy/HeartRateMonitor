@@ -21,9 +21,3 @@ var writeToJson = function(currentDate, min, max, median, timestamp) {
 }
 
 writeToJson(currentDate, calc(data.min, 30), calc(data.median, 60), calc(data.max, 81), latestDataTimestamp);
-
-console.log(currentDate);
-console.log(calc(data.min, 30));
-console.log(calc(data.median, 60));
-console.log(calc(data.max, 81));
-console.log(latestDataTimestamp);
