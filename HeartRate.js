@@ -20,4 +20,4 @@ var writeToJson = function(currentDate, min, max, median, timestamp) {
     fs.writeFileSync("./output.json", jsonData);
 }
 
-writeToJson(currentDate, calc(data.min, 30), calc(data.max, 60), calc(data.median, 81), latestDataTimestamp);
+writeToJson(currentDate, calc(data.min, 30), calc(data.max, 81), calc(data.median, 60), latestDataTimestamp);
