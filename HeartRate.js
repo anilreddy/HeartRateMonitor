@@ -9,9 +9,7 @@ let currentDate = `${year}-${month}-${day}`;
 let latestDataTimestamp = new Date().toJSON();
 
 var calc = function(max, min) {
-    for (var i = 0; i < 1; ++i) {
         return Math.floor(Math.random() * (max - min + 1) + min);
-    }
 }
 
 var writeToJson = function(currentDate, min, max, median, timestamp) {
