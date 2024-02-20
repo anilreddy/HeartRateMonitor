@@ -15,9 +15,9 @@ var calc = function(max, min) {
 }
 
 var writeToJson = function(currentDate, min, max, median, timestamp) {
-    let data = {"date":currentDate,"min": min, "max": max, "median": median, "latestDataTimestamp": timestamp};
+    let data = {"date":currentDate,"min": min, "median": max, "max": median, "latestDataTimestamp": timestamp};
     let jsonData = JSON.stringify(data);
     fs.writeFileSync("./output.json", jsonData);
 }
 
-writeToJson(currentDate, calc(data.min, 30), calc(data.median, 60), calc(data.max, 81), latestDataTimestamp);
+writeToJson(currentDate, calc(data.min, 30), calc(data.max, 60), calc(data.median, 81), latestDataTimestamp);
