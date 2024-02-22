@@ -1,43 +1,44 @@
 const fs = require('fs');
 
-// Function to generate random heart rate data
-function generateHeartRateData(count) {
-    const data = [];
-    for (let i = 0; i < count; i++) {
-        const heartRate = Math.floor(Math.random() * (150 - 60 + 1)) + 60; // Generating heart rate between 60 and 150
-        data.push(heartRate);
+// Function to calculate median
+function median(values) {
+    values.sort((a, b) => a - b);
+    const half = Math.floor(values.length / 2);
+    if (values.length % 2 === 0) {
+        return (values[half - 1] + values[half]) / 2.0;
+    } else {
+        return values[half];
     }
-    return data;
 }
 
-// Function to calculate minimum, maximum, and median heart rates
-function calculateStats(heartRateData) {
-    const sortedData = heartRateData.slice().sort((a, b) => a - b);
-    const min = sortedData[0];
-    const max = sortedData[sortedData.length - 1];
-    const median = sortedData[Math.floor(sortedData.length / 2)];
-    return { min, max, median };
+// Generate heartbeat data for last 4 days
+const today = new Date();
+const heartbeatData = [];
+const currentDate = new Date(today);
+
+for (let i = 0; i < 4; i++) {
+    currentDate.setDate(today.getDate() - i);
+    const dayData = {
+        date: currentDate.toISOString().split('T')[0],
+        min: Math.floor(Math.random() * (80 - 60 + 1)) + 60, // Minimum heart rate
+        max: Math.floor(Math.random() * (120 - 100 + 1)) + 100, // Maximum heart rate
+        // Simulating heart rate readings for the day
+        // heartRates: [/* Insert heart rate readings here */]
+    };
+    heartbeatData.push(dayData);
 }
 
-// Generate heart rate data
-const heartRateData = generateHeartRateData(100);
+// Calculate and add median for each day
+heartbeatData.forEach(day => {
+    // Calculate median from min and max values
+    day.median = Math.round(median([day.min, day.max]));
+    day.latestTimeStamp = currentDate.toISOString();
+});
 
-// Calculate statistics
-const { min, max, median } = calculateStats(heartRateData);
-
-// Create JSON object
-const heartRateJSON = {
-    date: new Date().toLocaleDateString(),
-    minimum: min,
-    maximum: max,
-    median: median,
-    timestamp: new Date().toJSON()
-};
-
-// Convert JSON object to string
-const jsonData = JSON.stringify(heartRateJSON, null, 2);
+// Convert data to JSON
+const jsonData = JSON.stringify(heartbeatData, null, 2);
 
 // Write JSON data to file
-fs.writeFileSync('output.json', jsonData, 'utf-8');
+fs.writeFileSync('output.json', jsonData);
 
-console.log('Heart rate data saved to output.json');
+console.log('Heartbeat data generated and saved to output.json');
