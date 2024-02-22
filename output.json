@@ -1,0 +1,30 @@
+[
+  {
+    "date": "2024-02-22",
+    "min": 80,
+    "max": 118,
+    "median": 99,
+    "latestTimeStamp": "2024-02-19T14:12:50.656Z"
+  },
+  {
+    "date": "2024-02-21",
+    "min": 68,
+    "max": 113,
+    "median": 91,
+    "latestTimeStamp": "2024-02-19T14:12:50.656Z"
+  },
+  {
+    "date": "2024-02-20",
+    "min": 73,
+    "max": 109,
+    "median": 91,
+    "latestTimeStamp": "2024-02-19T14:12:50.656Z"
+  },
+  {
+    "date": "2024-02-19",
+    "min": 63,
+    "max": 110,
+    "median": 87,
+    "latestTimeStamp": "2024-02-19T14:12:50.656Z"
+  }
+]
