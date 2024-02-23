@@ -1,7 +1,36 @@
 const fs = require('fs');
 
+function calculateHeartRateStatistics(heartRateData) {
+let dDatas = [];
+    // HeartRateData is sorted by date and time based on 'heartbeat.json'
+let dates = Array.from(new Set(heartRateData
+        .filter(function (data) { return data && data.timestamps && data.timestamps.startTime; })
+        .map(function (data) { return data.timestamps.startTime.split('T')[0]; })));
+
+        for (let i = 0, j = dates; i < j.length; i++) {
+            let date = j[i];
+            let dData = heartRateData.filter(function (data) { return data.timestamps.startTime.startsWith(date); });
+            let beatsPerMinuteArray = dData.map(function (data) { return data.beatsPerMinute; });
+            let min = Math.min.apply(Math, beatsPerMinuteArray);
+            let max = Math.max.apply(Math, beatsPerMinuteArray);
+            let median = calculateMedian(beatsPerMinuteArray);
+            let latestDataTimestamp = dData[dData.length - 1].timestamps.endTime;
+
+            // Generates data in the specified format in JSON file
+            dDatas.push({
+                date: date,
+                min: min,
+                max: max,
+                median: median,
+                latestDataTimestamp: latestDataTimestamp,
+            });
+
+        }
+        return dDatas;
+}
+
 // Function to calculate median
-function median(values) {
+function calculateMedian(values) {
     values.sort((a, b) => a - b);
     const half = Math.floor(values.length / 2);
     if (values.length % 2 === 0) {
@@ -11,32 +40,14 @@ function median(values) {
     }
 }
 
-// Generate heartbeat data for last 4 days
-const today = new Date();
-const heartbeatData = [];
-const currentDate = new Date(today);
+let inputFilename = 'heartrate.json';
+let inputData = JSON.parse(fs.readFileSync(inputFilename, 'utf8'));
 
-for (let i = 0; i < 4; i++) {
-    currentDate.setDate(today.getDate() - i);
-    const dayData = {
-        date: currentDate.toISOString().split('T')[0],
-        min: Math.floor(Math.random() * (80 - 60 + 1)) + 60, // Minimum heart rate
-        max: Math.floor(Math.random() * (120 - 100 + 1)) + 100, // Maximum heart rate
-        // Simulating heart rate readings for the day
-        // heartRates: [/* Insert heart rate readings here */]
-    };
-    heartbeatData.push(dayData);
-}
 
-// Calculate and add median for each day
-heartbeatData.forEach(day => {
-    // Calculate median from min and max values
-    day.median = Math.round(median([day.min, day.max]));
-    day.latestTimeStamp = currentDate.toISOString();
-});
+let heartRateStats = calculateHeartRateStatistics(inputData);
 
 // Convert data to JSON
-const jsonData = JSON.stringify(heartbeatData, null, 2);
+const jsonData = JSON.stringify(heartRateStats, null, 2);
 
 // Write JSON data to file
 fs.writeFileSync('output.json', jsonData);
